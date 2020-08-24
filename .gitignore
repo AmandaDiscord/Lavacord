@@ -55,6 +55,4 @@ jspm_packages/
 .env
 
 # Build
-dist
 docs
-
