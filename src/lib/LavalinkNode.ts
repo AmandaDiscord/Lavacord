@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import { Manager } from "./Manager";
 import { Player } from "./Player";
-import { LavalinkNodeOptions, LavalinkStats, QueueData, /* WebsocketCloseEvent */ } from "./Types";
+import { LavalinkNodeOptions, LavalinkStats, QueueData, WebsocketCloseEvent } from "./Types";
 
 /**
  * The class for handling everything to do with connecting to Lavalink
@@ -99,7 +99,7 @@ export class LavalinkNode {
      */
     public async connect(): Promise<WebSocket | boolean> {
         this.ws = await new Promise((resolve, reject) => {
-            // if (this.connected) this.ws!.close();
+            if (this.connected) this.ws!.close();
 
             const headers: Record<string, string> = {
                 Authorization: this.password,
@@ -125,13 +125,13 @@ export class LavalinkNode {
             ws
                 .once("open", onOpen)
                 .once("error", onEvent)
-                // .once("close", onEvent);
+                .once("close", onEvent);
         });
 
         this.ws!
             .on("message", this.onMessage.bind(this))
             .on("error", this.onError.bind(this))
-            // .on("close", this.onClose.bind(this));
+            .on("close", this.onClose.bind(this));
         return this.ws!;
     }
 
@@ -223,10 +223,10 @@ export class LavalinkNode {
      * Private function for handling the close event from WebSocket
      * @param event WebSocket event data
      */
-    /*private onClose(event: WebsocketCloseEvent): void {
+    private onClose(event: WebsocketCloseEvent): void {
         this.manager.emit("disconnect", event, this);
         if (event.code !== 1000 || event.reason !== "destroy") return this.reconnect();
-    } */
+    }
 
     /**
      * Handles reconnecting if something happens and the node discounnects

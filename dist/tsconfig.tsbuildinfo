@@ -457,8 +457,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/lavalinknode.ts": {
-        "version": "36d71113e86265acf40ecca5af90f2c9cd55ad0a9ed66645e33af6c6c1aad6a0",
-        "signature": "fa53801c8c6c2f6dc9798085e954d3854eb37bbe93479bb220139f9706d29ad9",
+        "version": "521c26ef76a192b2bbe29ac0251e51767d5e81e71eb902749b0dc834ede3057e",
+        "signature": "1a19fb7f0f7caccc76593bed035a7e7c363f0745733eff9df38cd098364de5bf",
         "affectsGlobalScope": false
       },
       "../node_modules/form-data/index.d.ts": {

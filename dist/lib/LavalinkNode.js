@@ -82,7 +82,8 @@ class LavalinkNode {
      */
     async connect() {
         this.ws = await new Promise((resolve, reject) => {
-            // if (this.connected) this.ws!.close();
+            if (this.connected)
+                this.ws.close();
             const headers = {
                 Authorization: this.password,
                 "Num-Shards": String(this.manager.shards || 1),
@@ -102,13 +103,13 @@ class LavalinkNode {
             };
             ws
                 .once("open", onOpen)
-                .once("error", onEvent);
-            // .once("close", onEvent);
+                .once("error", onEvent)
+                .once("close", onEvent);
         });
         this.ws
             .on("message", this.onMessage.bind(this))
-            .on("error", this.onError.bind(this));
-        // .on("close", this.onClose.bind(this));
+            .on("error", this.onError.bind(this))
+            .on("close", this.onClose.bind(this));
         return this.ws;
     }
     /**
@@ -195,10 +196,11 @@ class LavalinkNode {
      * Private function for handling the close event from WebSocket
      * @param event WebSocket event data
      */
-    /*private onClose(event: WebsocketCloseEvent): void {
+    onClose(event) {
         this.manager.emit("disconnect", event, this);
-        if (event.code !== 1000 || event.reason !== "destroy") return this.reconnect();
-    } */
+        if (event.code !== 1000 || event.reason !== "destroy")
+            return this.reconnect();
+    }
     /**
      * Handles reconnecting if something happens and the node discounnects
      */
