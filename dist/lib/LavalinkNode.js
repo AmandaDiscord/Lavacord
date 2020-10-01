@@ -160,8 +160,11 @@ class LavalinkNode {
             clearTimeout(this._reconnect);
         this._queueFlush()
             .catch(error => this.manager.emit("error", error, this));
-        if (this.resumeKey)
-            this.configureResuming(this.resumeKey).catch(error => this.manager.emit("error", error, this));
+        if (this.resumeKey) {
+            setTimeout(() => {
+                this.configureResuming(this.resumeKey).catch(error => this.manager.emit("error", error, this));
+            }, 5000);
+        }
         this.manager.emit("ready", this);
     }
     /**
