@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Manager = void 0;
 const events_1 = require("events");
 const LavalinkNode_1 = require("./LavalinkNode");
 const Player_1 = require("./Player");

@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LavalinkNode = void 0;
 const ws_1 = __importDefault(require("ws"));
 /**
  * The class for handling everything to do with connecting to Lavalink
@@ -102,13 +103,13 @@ class LavalinkNode {
             };
             ws
                 .once("open", onOpen)
-                .once("error", onEvent)
-                .once("close", onEvent);
+                .once("error", onEvent);
+            // .once("close", onEvent);
         });
         this.ws
             .on("message", this.onMessage.bind(this))
-            .on("error", this.onError.bind(this))
-            .on("close", this.onClose.bind(this));
+            .on("error", this.onError.bind(this));
+        // .on("close", this.onClose.bind(this));
         return this.ws;
     }
     /**
@@ -195,11 +196,10 @@ class LavalinkNode {
      * Private function for handling the close event from WebSocket
      * @param event WebSocket event data
      */
-    onClose(event) {
+    /*private onClose(event: WebsocketCloseEvent): void {
         this.manager.emit("disconnect", event, this);
-        if (event.code !== 1000 || event.reason !== "destroy")
-            return this.reconnect();
-    }
+        if (event.code !== 1000 || event.reason !== "destroy") return this.reconnect();
+    } */
     /**
      * Handles reconnecting if something happens and the node discounnects
      */
