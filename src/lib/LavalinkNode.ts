@@ -99,7 +99,7 @@ export class LavalinkNode {
      */
     public async connect(): Promise<WebSocket | boolean> {
         this.ws = await new Promise((resolve, reject) => {
-            if (this.connected) this.ws!.close();
+            // if (this.connected) this.ws!.close();
 
             const headers: Record<string, string> = {
                 Authorization: this.password,

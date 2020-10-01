@@ -82,8 +82,7 @@ class LavalinkNode {
      */
     async connect() {
         this.ws = await new Promise((resolve, reject) => {
-            if (this.connected)
-                this.ws.close();
+            // if (this.connected) this.ws!.close();
             const headers = {
                 Authorization: this.password,
                 "Num-Shards": String(this.manager.shards || 1),

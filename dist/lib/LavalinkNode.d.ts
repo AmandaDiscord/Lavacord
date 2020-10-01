@@ -103,7 +103,6 @@ export declare class LavalinkNode {
      * Private function for handling the close event from WebSocket
      * @param event WebSocket event data
      */
-    private onClose;
     /**
      * Handles reconnecting if something happens and the node discounnects
      */
