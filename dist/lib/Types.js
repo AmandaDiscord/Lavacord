@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoadType = void 0;
 /**
  * LoadType ENUM
  */

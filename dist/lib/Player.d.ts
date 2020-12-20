@@ -2,7 +2,7 @@
 import { EventEmitter } from "events";
 import { LavalinkNode } from "./LavalinkNode";
 import { Manager } from "./Manager";
-import { LavalinkEvent, LavalinkPlayerState, PlayerEqualizerBand, PlayerPlayOptions, PlayerState, PlayerUpdateVoiceState, JoinOptions } from "./Types";
+import { LavalinkEvent, LavalinkPlayerState, PlayerEqualizerBand, PlayerPlayOptions, PlayerState, PlayerUpdateVoiceState, JoinOptions, PlayerFilterOptions } from "./Types";
 /**
  * The Player class, this handles everything to do with the guild sides of things, like playing, stoping, pausing, resuming etc
  */
@@ -68,6 +68,7 @@ export declare class Player extends EventEmitter {
      * @param position Seeks the song to the position specified in milliseconds, use the duration of the song from lavalink to get the duration
      */
     seek(position: number): Promise<boolean>;
+    filters(options: PlayerFilterOptions): Promise<boolean>;
     /**
      * Sets the equalizer of the current song, if you wanted to do something like bassboost
      * @param bands The bands that you want lavalink to modify read [IMPLEMENTATION.md](https://github.com/Frederikam/Lavalink/blob/master/IMPLEMENTATION.md#outgoing-messages) for more information
@@ -111,6 +112,7 @@ export interface Player {
     on(event: "playerUpdate", listener: (data: {
         state: LavalinkPlayerState;
     }) => void): this;
+    on(event: "filters", listener: (data: PlayerFilterOptions) => void): this;
     once(event: "event", listener: (data: LavalinkEvent) => void): this;
     once(event: "start", listener: (data: LavalinkEvent) => void): this;
     once(event: "end", listener: (data: LavalinkEvent) => void): this;
@@ -122,6 +124,7 @@ export interface Player {
     once(event: "playerUpdate", listener: (data: {
         state: LavalinkPlayerState;
     }) => void): this;
+    once(event: "filters", listener: (data: PlayerFilterOptions) => void): this;
     off(event: "event", listener: (data: LavalinkEvent) => void): this;
     off(event: "start", listener: (data: LavalinkEvent) => void): this;
     off(event: "end", listener: (data: LavalinkEvent) => void): this;
@@ -133,6 +136,7 @@ export interface Player {
     off(event: "playerUpdate", listener: (data: {
         state: LavalinkPlayerState;
     }) => void): this;
+    off(event: "filters", listener: (data: PlayerFilterOptions) => void): this;
     emit(event: "event", data: LavalinkEvent): boolean;
     emit(event: "start", data: LavalinkEvent): boolean;
     emit(event: "end", data: LavalinkEvent): boolean;
@@ -144,4 +148,5 @@ export interface Player {
     emit(event: "playerUpdate", data: {
         state: LavalinkPlayerState;
     }): boolean;
+    emit(event: "filters", data: PlayerFilterOptions): boolean;
 }

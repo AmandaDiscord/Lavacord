@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Player = void 0;
 const events_1 = require("events");
 /**
  * The Player class, this handles everything to do with the guild sides of things, like playing, stoping, pausing, resuming etc
@@ -18,7 +17,7 @@ class Player extends events_1.EventEmitter {
         /**
          * The PlayerState of this Player
          */
-        this.state = { volume: 100, equalizer: [] };
+        this.state = { volume: 100, filters: {} };
         /**
          * Whether or not the player is actually playing anything
          */
@@ -73,7 +72,7 @@ class Player extends events_1.EventEmitter {
             }
         })
             .on("playerUpdate", data => {
-            this.state = { volume: this.state.volume, equalizer: this.state.equalizer, ...data.state };
+            this.state = { volume: this.state.volume, filters: this.state.filters, ...data.state };
         });
     }
     /**
@@ -119,7 +118,7 @@ class Player extends events_1.EventEmitter {
      * @param volume The volume from 0 to 150
      */
     async volume(volume) {
-        const d = await this.send("volume", { volume });
+        const d = await this.filters({ volume: volume / 100 });
         this.state.volume = volume;
         if (this.listenerCount("volume"))
             this.emit("volume", volume);
@@ -135,13 +134,18 @@ class Player extends events_1.EventEmitter {
             this.emit("seek", position);
         return d;
     }
+    async filters(options) {
+        const d = await this.send("filters", options);
+        if (this.listenerCount("filters"))
+            this.emit("filters", options);
+        return d;
+    }
     /**
      * Sets the equalizer of the current song, if you wanted to do something like bassboost
      * @param bands The bands that you want lavalink to modify read [IMPLEMENTATION.md](https://github.com/Frederikam/Lavalink/blob/master/IMPLEMENTATION.md#outgoing-messages) for more information
      */
     async equalizer(bands) {
-        const d = await this.send("equalizer", { bands });
-        this.state.equalizer = bands;
+        const d = await this.filters({ equalizer: bands });
         return d;
     }
     /**

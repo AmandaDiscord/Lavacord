@@ -45,7 +45,7 @@ export interface PlayerState extends LavalinkPlayerState {
     /**
      * The current equalizer state of the Player, so end users can keep track if they need to
      */
-    equalizer: PlayerEqualizerBand[];
+    filters: PlayerFilterOptions;
 }
 /**
  * Player Play Options
@@ -576,4 +576,33 @@ export interface RotatingNanoIpRoutePlanner {
          */
         currentAddressIndex: number;
     };
+}
+export interface PlayerFilterOptions {
+    /** Float value of 0-1 where 1.0 is 100%. Values >1.0 may cause clipping */
+    volume?: number;
+    equalizer?: PlayerEqualizerBand[];
+    /** Uses equalization to eliminate part of a band, usually targeting vocals */
+    karaoke?: PlayerKaraokeOptions;
+    /** Changes the speed, pitch, and rate. All default to 1 */
+    timescale?: {
+        speed?: number;
+        pitch?: number;
+        rate?: number;
+    };
+    /** Uses amplification to create a shuddering effect, where the volume quickly oscillates */
+    tremelo?: {
+        frequency?: number;
+        depth?: number;
+    };
+    /** Similar to tremolo. While tremolo oscillates the volume, vibrato oscillates the pitch */
+    vibrato?: {
+        frequency?: number;
+        depth?: number;
+    };
+}
+export interface PlayerKaraokeOptions {
+    level?: number;
+    monoLevel?: number;
+    filterBand?: number;
+    filterWidth?: number;
 }
