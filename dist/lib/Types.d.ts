@@ -39,11 +39,7 @@ export interface LavalinkPlayerState {
  */
 export interface PlayerState extends LavalinkPlayerState {
     /**
-     * The current volume of the Player, used for end user as lavalink doesn't provide this
-     */
-    volume: number;
-    /**
-     * The current equalizer state of the Player, so end users can keep track if they need to
+     * The current filters state of the Player, so end users can keep track if they need to
      */
     filters: PlayerFilterOptions;
 }
@@ -583,7 +579,7 @@ export interface PlayerFilterOptions {
     equalizer?: PlayerEqualizerBand[];
     /** Uses equalization to eliminate part of a band, usually targeting vocals */
     karaoke?: PlayerKaraokeOptions;
-    /** Changes the speed, pitch, and rate. All default to 1 */
+    /** Changes the speed, pitch, and rate. All default to 1.0 */
     timescale?: {
         speed?: number;
         pitch?: number;

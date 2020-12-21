@@ -60,7 +60,7 @@ export declare class Player extends EventEmitter {
     resume(): Promise<boolean>;
     /**
      * Changes the volume, only for the current song
-     * @param volume The volume from 0 to 150
+     * @param volume The volume as a float from 0.0 to 1.0 (volumes > 1.0 may cause clipping)
      */
     volume(volume: number): Promise<boolean>;
     /**

@@ -10,7 +10,7 @@ export class Player extends EventEmitter {
     /**
      * The PlayerState of this Player
      */
-    public state: PlayerState = { volume: 100, filters: {} };
+    public state: PlayerState = { filters: {} };
     /**
      * Whether or not the player is actually playing anything
      */
@@ -67,7 +67,7 @@ export class Player extends EventEmitter {
             }
         })
             .on("playerUpdate", data => {
-                this.state = { volume: this.state.volume, filters: this.state.filters, ...data.state };
+                this.state = { filters: this.state.filters, ...data.state };
             });
     }
 
@@ -115,11 +115,10 @@ export class Player extends EventEmitter {
 
     /**
      * Changes the volume, only for the current song
-     * @param volume The volume from 0 to 150
+     * @param volume The volume as a float from 0.0 to 1.0 (volumes > 1.0 may cause clipping)
      */
     public async volume(volume: number): Promise<boolean> {
-        const d = await this.filters({ volume: volume / 100 });
-        this.state.volume = volume;
+        const d = await this.filters({ volume: volume });
         if (this.listenerCount("volume")) this.emit("volume", volume);
         return d;
     }
@@ -136,6 +135,7 @@ export class Player extends EventEmitter {
 
     public async filters(options: PlayerFilterOptions): Promise<boolean> {
         const d = await this.send("filters", options);
+        this.state.filters = options;
         if (this.listenerCount("filters")) this.emit("filters", options);
         return d;
     }
