@@ -338,7 +338,7 @@
         "signature": "30ce0ba2c80c39007ab8e0132807437b4eb58ff73461e1602e2e2bf07b6416ed"
       },
       "../src/lib/player.ts": {
-        "version": "bc0d4ca1e944a7b47725d3ca9dcb0c89d8011949f3df30937ee039bbe1705b1e",
+        "version": "4fefdfcf966b26431232bcdfc3612613262c95d401996d64dcfeb691e9481780",
         "signature": "c51a6ce588034c496be6a7cb40b0297a05ed490079b89336878fe133ab1c0d04"
       },
       "../src/lib/types.ts": {
@@ -941,15 +941,15 @@
       "../node_modules/@types/node/base.d.ts",
       "../node_modules/@types/node/index.d.ts",
       "../node_modules/@types/ws/index.d.ts",
+      "../src/lib/types.ts",
+      "../src/lib/manager.ts",
+      "../src/lib/lavalinknode.ts",
       "../node_modules/form-data/index.d.ts",
       "../node_modules/@types/node-fetch/externals.d.ts",
       "../node_modules/@types/node-fetch/index.d.ts",
-      "../src/lib/types.ts",
       "../src/lib/rest.ts",
-      "../src/lib/player.ts",
-      "../src/lib/manager.ts",
-      "../src/lib/lavalinknode.ts",
-      "../src/index.ts"
+      "../src/index.ts",
+      "../src/lib/player.ts"
     ]
   },
   "version": "3.7.4"
