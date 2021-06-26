@@ -3,11 +3,63 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LavalinkNode = void 0;
 const ws_1 = __importDefault(require("ws"));
 /**
  * The class for handling everything to do with connecting to Lavalink
  */
 class LavalinkNode {
+    manager;
+    /**
+     * The id of the LavalinkNode so Nodes are better organized
+     */
+    id;
+    /**
+     * The host of the LavalinkNode, this could be a ip or domain.
+     */
+    host = "localhost";
+    /**
+     * The port of the LavalinkNode
+     */
+    port = 2333;
+    /**
+     * The interval that the node will try to reconnect to lavalink at in milliseconds
+     */
+    reconnectInterval = 10000;
+    /**
+     * The password of the lavalink node
+     */
+    password = "youshallnotpass";
+    /**
+     * The WebSocket instance for this LavalinkNode
+     */
+    ws = null;
+    /**
+     * The statistics of the LavalinkNode
+     */
+    stats;
+    /**
+     * The resume key to send to the LavalinkNode so you can resume properly
+     */
+    resumeKey;
+    /**
+     * The resume timeout
+     */
+    resumeTimeout = 120;
+    /**
+     * Extra info attached to your node, not required and is not sent to lavalink, purely for you.
+     */
+    state;
+    /**
+     * The reconnect timeout
+     * @private
+     */
+    _reconnect;
+    /**
+     * The queue for send
+     * @private
+     */
+    _queue = [];
     /**
      * The base of the connection to lavalink
      * @param manager The manager that created the LavalinkNode
@@ -15,35 +67,6 @@ class LavalinkNode {
      */
     constructor(manager, options) {
         this.manager = manager;
-        /**
-         * The host of the LavalinkNode, this could be a ip or domain.
-         */
-        this.host = "localhost";
-        /**
-         * The port of the LavalinkNode
-         */
-        this.port = 2333;
-        /**
-         * The interval that the node will try to reconnect to lavalink at in milliseconds
-         */
-        this.reconnectInterval = 10000;
-        /**
-         * The password of the lavalink node
-         */
-        this.password = "youshallnotpass";
-        /**
-         * The WebSocket instance for this LavalinkNode
-         */
-        this.ws = null;
-        /**
-         * The resume timeout
-         */
-        this.resumeTimeout = 120;
-        /**
-         * The queue for send
-         * @private
-         */
-        this._queue = [];
         this.id = options.id;
         if (options.host)
             Object.defineProperty(this, "host", { value: options.host });

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Manager = void 0;
 const events_1 = require("events");
 const LavalinkNode_1 = require("./LavalinkNode");
 const Player_1 = require("./Player");
@@ -8,40 +9,48 @@ const Player_1 = require("./Player");
  */
 class Manager extends events_1.EventEmitter {
     /**
+     * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of Lavalink Nodes
+     */
+    nodes = new Map();
+    /**
+     * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of all the players
+     */
+    players = new Map();
+    /**
+     * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of all the VOICE_SERVER_UPDATE States
+     */
+    voiceServers = new Map();
+    /**
+     * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of all the VOICE_STATE_UPDATE States
+     */
+    voiceStates = new Map();
+    /**
+     * The user id of the bot this Manager is managing
+     */
+    user;
+    /**
+     * The amount of shards the bot has, by default its 1
+     */
+    shards = 1;
+    /**
+     * The send function needs for the library to function
+     */
+    send;
+    /**
+     * The Player the manager will use when creating new Players
+     */
+    Player = Player_1.Player;
+    /**
+     * An Set of all the expecting connections guild id's
+     */
+    expecting = new Set();
+    /**
      * The constructor of the Manager
      * @param nodes A Array of {@link LavalinkNodeOptions} that the Manager will connect to
      * @param options The options for the Manager {@link ManagerOptions}
      */
     constructor(nodes, options) {
         super();
-        /**
-         * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of Lavalink Nodes
-         */
-        this.nodes = new Map();
-        /**
-         * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of all the players
-         */
-        this.players = new Map();
-        /**
-         * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of all the VOICE_SERVER_UPDATE States
-         */
-        this.voiceServers = new Map();
-        /**
-         * A [**Map**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of all the VOICE_STATE_UPDATE States
-         */
-        this.voiceStates = new Map();
-        /**
-         * The amount of shards the bot has, by default its 1
-         */
-        this.shards = 1;
-        /**
-         * The Player the manager will use when creating new Players
-         */
-        this.Player = Player_1.Player;
-        /**
-         * An Set of all the expecting connections guild id's
-         */
-        this.expecting = new Set();
         if (options.user)
             this.user = options.user;
         if (options.shards)
@@ -126,8 +135,8 @@ class Manager extends events_1.EventEmitter {
         await player.destroy();
         player.node = node;
         await player.connect(voiceUpdateState);
-        await player.play(track, { startTime: position, volume: state.volume });
-        await player.equalizer(state.equalizer);
+        await player.play(track, { startTime: position, volume: state.filters.volume || 1.0 });
+        await player.filters(state.filters);
         return player;
     }
     /**

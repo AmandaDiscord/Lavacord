@@ -1,10 +1,37 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Player = void 0;
 const events_1 = require("events");
 /**
  * The Player class, this handles everything to do with the guild sides of things, like playing, stoping, pausing, resuming etc
  */
 class Player extends events_1.EventEmitter {
+    node;
+    id;
+    /**
+     * The PlayerState of this Player
+     */
+    state = { filters: {} };
+    /**
+     * Whether or not the player is actually playing anything
+     */
+    playing = false;
+    /**
+     * When the track started playing
+     */
+    timestamp = null;
+    /**
+     * Whether or not the song that is playing is paused or not
+     */
+    paused = false;
+    /**
+     * The current track in Lavalink's base64 string form
+     */
+    track = null;
+    /**
+     * The voiceUpdateState of the player, used for swtiching nodes
+     */
+    voiceUpdateState = null;
     /**
      * The constructor of the player
      * @param node The Lavalink of the player
@@ -14,30 +41,6 @@ class Player extends events_1.EventEmitter {
         super();
         this.node = node;
         this.id = id;
-        /**
-         * The PlayerState of this Player
-         */
-        this.state = { filters: {} };
-        /**
-         * Whether or not the player is actually playing anything
-         */
-        this.playing = false;
-        /**
-         * When the track started playing
-         */
-        this.timestamp = null;
-        /**
-         * Whether or not the song that is playing is paused or not
-         */
-        this.paused = false;
-        /**
-         * The current track in Lavalink's base64 string form
-         */
-        this.track = null;
-        /**
-         * The voiceUpdateState of the player, used for swtiching nodes
-         */
-        this.voiceUpdateState = null;
         this.on("event", data => {
             switch (data.type) {
                 case "TrackStartEvent":
